@@ -8,15 +8,13 @@ figure out best way to encapsulate each clock type settings, implement encapsula
 --problem, hour numerals position are hardcoded, maybe a different solution should be searched
 --possibly useful website http://www.dbp-consulting.com/tutorials/canvas/CanvasArrow.html
 */
+//G3tH8$per5_n#=Az;
 
+//---------------------------------
 
-function init(){
+//Clock custom object
 
-	//---------------------------------
-
-	//Clock object definition
-
-	var Clock = function (type,light,lightColor,dimensions,context1,context2){
+Clock = function (type,light,lightColor,dimensions,context1,context2){
 		
 		//CLock object properties
 
@@ -29,54 +27,55 @@ function init(){
 		this.staticContext = context1;
 		this.dynamicContext = context2;
 	
+}
+
+//sets the clock time array [hours,minutes,seconds]
+
+Clock.prototype.setTime = function(){ this.time = calculate_time(); }
+
+//gets the clock time array [hours,minutes,seconds]
+
+Clock.prototype.getTime = function(){ return this.time; }
+
+//methods changeslightState from what it currently is
+
+Clock.prototype.changeLightState = function(){
+	if (!this.lightOn){
+		this.lightOn = true;
 	}
-
-	//sets the clock time array [hours,minutes,seconds]
-
-	Clock.prototype.setTime = function(){ this.time = calculate_time(); }
-
-	//gets the clock time array [hours,minutes,seconds]
-
-	Clock.prototype.getTime = function(){ return this.time; }
-
-	//methods changeslightState from what it currently is
-
-	Clock.prototype.changeLightState = function(){
-		if (!this.lightOn){
-			this.lightOn = true;
-		}
-		else{
-			this.lightOn = false;
-		}
+	else{
+		this.lightOn = false;
 	}
+}
 
-	//method gets current light state
 
-	Clock.prototype.getLightState = function(){ return this.lightOn; }
+//methods calls drawing functions
 
-	//methods calls drawing functions
+Clock.prototype.draw = function(){
 
-	Clock.prototype.draw = function(){
+	//static clock draw uses canvas workbench_layer1
 
-		//static clock draw uses canvas workbench_layer1
+	static_clockGraphics_draw(this.staticContext);
 
-		static_clockGraphics_draw(this.staticContext);
+	//fix assigns context Math.PI*3/2 to start angle
+	//enables easier clocks needles positioning
 
-		//fix assigns context Math.PI*3/2 to start angle
-		//enables easier clocks needles positioning
+	this.dynamicContext.translate(200,200);
+	this.dynamicContext.rotate(-90*Math.PI/180);
 
-		this.dynamicContext.translate(200,200);
-		this.dynamicContext.rotate(-90*Math.PI/180);
+	//dynamic clock part draw uses canvas workbench_layer2
 
-		//dynamic clock part draw uses canvas workbench_layer2
+	var ctxDyn = this.dynamicContext;
 
-		var ctxDyn = this.dynamicContext;
+	//animationFrame call for the dynamic clock part draw
 
-		//animationFrame call for the dynamic clock part draw
+	AnimationId = requestAnimationFrame( function () { dynamic_clockGraphics_draw(ctxDyn) } );
+}
 
-		AnimationId = requestAnimationFrame( function () { dynamic_clockGraphics_draw(ctxDyn) } );
-	}
+//---------------------------------
 
+
+function init(){
 
 	//dynamic canvas,ctx initialization
 
@@ -86,35 +85,91 @@ function init(){
 	//dynamic canvas,ctx initialization
 
 	var canvas = document.getElementById('workbench_layer2');
-	
-	
 	var ctx2 = canvas.getContext('2d');
 
 	//Clock object initialization
 
 	myClock = new Clock("analog",true,"rgba(112,250,149,0.3)",null,ctx1,ctx2);
 
+	//type,light,lightColor,dimensions,context1,context2
+
 	//attaching event listeners to canvas
 
 	canvas.addEventListener('mousedown',ClockLight);
 	canvas.addEventListener('mouseup',ClockLight);
+	canvas.addEventListener('mousemove',ClockLight);
 
 	//clock draw function call
 
 	myClock.draw();
 
+	/*var canvas = document.getElementById('bg_canvas');
+	var ctx3 = canvas.getContext('2d');
 
+	/*ctx3.fillStyle = "rgba(255,255,255,0.1";
+
+	ctx3.canvas.width = window.innerWidth;
+	ctx3.canvas.height = window.innerHeight;
+
+	var imageObj = new Image();
+
+	imageObj.onload = function (){
+
+		pattern = ctx3.createPattern(imageObj,"repeat");
+
+		ctx3.fillStyle = pattern;
+		ctx3.fillRect(0,0,ctx3.canvas.width,ctx3.canvas.height);
+	}
+
+	imageObj.src = "assets/wood2-1.jpg";
+	//"assets/009-subtle-light-patterns.jpg";
+	//"assets/patternhead71a-thumb.png";
+	//"assets/wood2-1.jpg"*/
 }
 
 function ClockLight(event){
 
-	//clock changesLightState if left mouse button is pressed
-	//console.log(event.type);
+	//clock changesLightState if left mouse button is pressed and if mouse leaves button during mouse left button press
+	
+	var buttonXstart = 98*Math.cos(Math.PI*2/120);
+	var buttonYstart = 98*Math.sin(-Math.PI*2/120);
+	var clickablePos = [200+buttonXstart+4,200+buttonXstart+10,200+buttonYstart+4,200+buttonYstart+16];
+
+	var mousePos = GetmousePos(this.staticContext,event);
+
+	//console.log(mousePos);
+
+	var inClickable_area = false;
+
+	if (mousePos.x >= clickablePos[0] && mousePos.x <= clickablePos[1]){
+		if (mousePos.y >= clickablePos[2] && mousePos.y <= clickablePos[3]){
+			inClickable_area = true;
+		}
+	}
+	else if ( myClock.lightOn ){
+		myClock.changeLightState();
+		return;
+	}
 
 	if (event.button == 0){
-		if (event.type == "mousedown" && !myClock.getLightState()) { myClock.changeLightState(); }
-		if (event.type == "mouseup" && myClock.getLightState()) { myClock.changeLightState(); }
+		if (event.type == "mousedown" && !myClock.lightOn && inClickable_area) { myClock.changeLightState(); }
+		if (event.type == "mouseup" && myClock.lightOn) { myClock.changeLightState(); }
 	}
+	return;
+}
+
+function GetmousePos(ctx,event){
+
+	//returns object with mouse position x and y as his properties
+
+	var canvas = document.getElementById('workbench_layer2');
+
+	var boundingRect = canvas.getBoundingClientRect();
+	return {
+		x: event.clientX - boundingRect.left,
+		y: event.clientY - boundingRect.top
+	};
+
 }
 
 function calculate_time(){
@@ -145,11 +200,11 @@ function static_clockGraphics_draw(ctx){
 	ctx.translate(200,200);
 
 	ctx.save();
-	ctx.shadowColor = "black";
-	ctx.shadowBlur = 2;
-	ctx.shadowOffsetX = 0;
-	ctx.shadowOffsetY = 0;
-	
+
+	ctx.arc(0,0,87,0,Math.PI*2);
+	ctx.fillStyle = "white";
+	ctx.fill();
+
 	//outer arc gradient
 
 	var gradient = ctx.createRadialGradient(0,0,90,0,0,0);
@@ -160,20 +215,41 @@ function static_clockGraphics_draw(ctx){
 
 	//ctx.fillRect(0,0,100,100);
 
+	//experimental canvas feature
+	//ctx.addHitRegion({id: "button"});
+
+	ctx.shadowColor = "rgba(0,0,0,0.6)";
+	ctx.shadowBlur = 0;
+	ctx.shadowOffsetX = 0;
+	ctx.shadowOffsetY = 0;
+
+
 	//outer arc
+
+	ctx.beginPath();
 	ctx.arc(0,0,92,0,Math.PI*2);
 	ctx.strokeStyle = gradient;
 	ctx.lineWidth = 12;
 	ctx.stroke();
 
-	//inner circle
-	ctx.restore();
+	//ctx.restore();
 	//ctx.beginPath();
-	//ctx.arc(0,0,60,0,Math.PI*2);
-	//ctx.fillStyle = "white";
-	//ctx.fill();
+
+	/*ctx.beginPath();
+
+	ctx.moveTo(0,0);
+	ctx.lineTo(98,0);
+	ctx.lineWidth = 1;
+	ctx.strokeStyle = "black";
+	ctx.stroke();*/
+
+
+	//ctx.beginPath();
+	//ctx.restore();
 
 	//inner clock text
+
+	ctx.restore();
 
 	ctx.font = "7pt Calibri";
 	ctx.textAlign = "center";
@@ -182,7 +258,7 @@ function static_clockGraphics_draw(ctx){
 	ctx.fillText("INDIGLO",0,28);
 	ctx.fillText("WR30M",0,35);
 
-
+	
 
 	//solution to hour markers with ctx.arc()
 	/*for(x=1;x<=12;x++){
@@ -252,19 +328,50 @@ function dynamic_clockGraphics_draw(ctx){
 
 	//dynamic region clearing
 
+	ctx.save();
 	ctx.beginPath();
-	ctx.arc(0,0,85,0,Math.PI*2);
-	ctx.clip();
-	ctx.clearRect(-90,-90,180,180);
+	//
+	ctx.clearRect(-105,-105,220,220);
+	ctx.arc(0,0,86,0,Math.PI*2);
+	//ctx.fillStyle = "white";
+	//ctx3.fill();
 
-
+	//console.log(myClock.lightOn);
 	//light on light off
 
-	if ( myClock.lightOn ){
+	var buttonXstart = 98*Math.cos(Math.PI/60);
+	var buttonYstart = 98*Math.sin(Math.PI/60)+2;
 
+	var buttonWidth = 6;
+	var buttonHeight = 16;
+
+	if ( myClock.lightOn ){
+		var buttonWidth = 4;
 		ctx.fillStyle = myClock.lightColor;
 		ctx.fill();
 	}
+
+	ctx.beginPath();
+	ctx.fillStyle = 'rgba(210,210,210,1)';
+	ctx.moveTo(buttonYstart,buttonXstart);
+	ctx.lineWidth = 0.5;
+	ctx.lineTo(buttonYstart,buttonXstart+buttonWidth);
+	ctx.lineTo(buttonYstart-buttonHeight,buttonXstart+buttonWidth);
+	ctx.lineTo(buttonYstart-buttonHeight,buttonXstart);
+	ctx.fill();
+
+	/*ctx.shadowColor = "rgba(0,0,0,0.6)";
+	ctx.shadowBlur = 2;
+	ctx.shadowOffsetX = 3;
+	ctx.shadowOffsetY = 0;*/
+	
+	ctx.restore();
+	ctx.beginPath();
+	ctx.moveTo(buttonYstart,buttonXstart+buttonWidth);
+	ctx.quadraticCurveTo(buttonYstart-buttonHeight/2,buttonXstart+buttonWidth+3,buttonYstart-buttonHeight,buttonXstart+buttonWidth);
+	ctx.fillStyle = "rgba(202,202,202,0.7)";
+	ctx.lineWidth = 1;
+	ctx.fill();
 
 	//get time values
 
