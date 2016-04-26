@@ -8,7 +8,7 @@ figure out best way to encapsulate each clock type settings, implement encapsula
 --problem, hour numerals position are hardcoded, maybe a different solution should be searched
 --possibly useful website http://www.dbp-consulting.com/tutorials/canvas/CanvasArrow.html
 */
-//G3tH8$per5_n#=Az;
+//
 
 //---------------------------------
 
