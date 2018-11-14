@@ -232,20 +232,6 @@ function static_clockGraphics_draw(ctx){
 	ctx.lineWidth = 12;
 	ctx.stroke();
 
-	//ctx.restore();
-	//ctx.beginPath();
-
-	/*ctx.beginPath();
-
-	ctx.moveTo(0,0);
-	ctx.lineTo(98,0);
-	ctx.lineWidth = 1;
-	ctx.strokeStyle = "black";
-	ctx.stroke();*/
-
-
-	//ctx.beginPath();
-	//ctx.restore();
 
 	//inner clock text
 
@@ -275,8 +261,7 @@ function static_clockGraphics_draw(ctx){
 	// draws outer clock markers
 
 	for(x=0;x<60;x++){
-		//ctx.save();
-		//ctx.rotate(x/60*Math.PI*2);
+		
 		ctx.beginPath();
 		if ( x%5 == 0 ){
 			ctx.moveTo(0,-76);
@@ -333,12 +318,7 @@ function dynamic_clockGraphics_draw(ctx){
 	//
 	ctx.clearRect(-105,-105,220,220);
 	ctx.arc(0,0,86,0,Math.PI*2);
-	//ctx.fillStyle = "white";
-	//ctx3.fill();
-
-	//console.log(myClock.lightOn);
-	//light on light off
-
+	
 	var buttonXstart = 98*Math.cos(Math.PI/60);
 	var buttonYstart = 98*Math.sin(Math.PI/60)+2;
 
@@ -360,10 +340,6 @@ function dynamic_clockGraphics_draw(ctx){
 	ctx.lineTo(buttonYstart-buttonHeight,buttonXstart);
 	ctx.fill();
 
-	/*ctx.shadowColor = "rgba(0,0,0,0.6)";
-	ctx.shadowBlur = 2;
-	ctx.shadowOffsetX = 3;
-	ctx.shadowOffsetY = 0;*/
 	
 	ctx.restore();
 	ctx.beginPath();

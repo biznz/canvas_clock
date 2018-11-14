@@ -2,8 +2,6 @@ header {
 	color: #259C8E;
 	font-size: 1.0em;
 	padding: 20px 50px;
-	border-style: dashed;
-	border-width: 1px;
 	z-index: 1;
 }
 
@@ -11,17 +9,20 @@ header h1{
 	text-align: center;
 }
 
-/*#bg_canvas{
-	position: fixed;
-	left: 0;
-	top: 0;
-	z-index: -1;
-}*/
 
-#bg_canvas,#workbench_layer1,#workbench_layer2{
-	position: absolute;
-	border-style: dotted;
-	border-width: 2px;
-	margin-left: 50px;
-	margin-top: 20px;
+#canvas{
+	border-style: solid;
+	border-color: blue;
 }
+
+pre{
+	padding-left: 50px;
+}
+
+aside{
+	position: fixed;
+	right: 10px;
+}
+#workbench_layer1,#workbench_layer2{
+	position: absolute;
+	right: 10px;	
