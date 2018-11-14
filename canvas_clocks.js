@@ -344,7 +344,10 @@ function dynamic_clockGraphics_draw(ctx){
 	ctx.restore();
 	ctx.beginPath();
 	ctx.moveTo(buttonYstart,buttonXstart+buttonWidth);
-	ctx.quadraticCurveTo(buttonYstart-buttonHeight/2,buttonXstart+buttonWidth+3,buttonYstart-buttonHeight,buttonXstart+buttonWidth);
+	ctx.quadraticCurveTo(buttonYstart-buttonHeight/2,
+		buttonXstart+buttonWidth+3,
+		buttonYstart-buttonHeight,
+		buttonXstart+buttonWidth);
 	ctx.fillStyle = "rgba(202,202,202,0.7)";
 	ctx.lineWidth = 1;
 	ctx.fill();
