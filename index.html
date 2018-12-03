@@ -10,12 +10,14 @@
 <header>
 	<h1>js canvas drawn watch</h1>
 </header>
-<aside>
+
+<main>
+	<aside width="500" height="400">
 	<canvas id="workbench_layer1" width="500" height="400"></canvas>
 	<canvas id="workbench_layer2" width="500" height="400"></canvas>
 </aside>
-	<main>
-		<pre><code>
+<section>
+<pre><code>
 Clock = function (type,light,lightColor,dimensions,context1,context2){
 		
 	//CLock object properties
@@ -131,11 +133,13 @@ function init(){
 
 function ClockLight(event){
 
-	//clock changesLightState if left mouse button is pressed and if mouse leaves button during mouse left button press
+	//clock changesLightState if left mouse button is pressed 
+	//and if mouse leaves button during mouse left button press
 	
 	var buttonXstart = 98*Math.cos(Math.PI*2/120);
 	var buttonYstart = 98*Math.sin(-Math.PI*2/120);
-	var clickablePos = [200+buttonXstart+4,200+buttonXstart+10,200+buttonYstart+4,200+buttonYstart+16];
+	var clickablePos = [200+buttonXstart+4,200+buttonXstart+10,200+buttonYstart+4,
+	200+buttonYstart+16];
 
 	var mousePos = GetmousePos(this.staticContext,event);
 
@@ -154,8 +158,10 @@ function ClockLight(event){
 	}
 
 	if (event.button == 0){
-		if (event.type == "mousedown" && !myClock.lightOn && inClickable_area) { myClock.changeLightState(); }
-		if (event.type == "mouseup" && myClock.lightOn) { myClock.changeLightState(); }
+		if (event.type == "mousedown" && !myClock.lightOn && 
+		inClickable_area) { myClock.changeLightState(); }
+		if (event.type == "mouseup" && 
+		myClock.lightOn) { myClock.changeLightState(); }
 	}
 	return;
 }
@@ -277,7 +283,8 @@ function static_clockGraphics_draw(ctx){
 		}
 		ctx.lineTo(0,-80);
 		ctx.stroke();
-		ctx.rotate(Math.PI*2/60);//ctx.save();ctx.rotate(x/60*Math.PI*2);ctx.restore(); ? 
+		ctx.rotate(Math.PI*2/60);
+		//ctx.save();ctx.rotate(x/60*Math.PI*2);ctx.restore(); ? 
 		//ctx.restore();
 	}
 	
@@ -346,7 +353,8 @@ function dynamic_clockGraphics_draw(ctx){
 	ctx.restore();
 	ctx.beginPath();
 	ctx.moveTo(buttonYstart,buttonXstart+buttonWidth);
-	ctx.quadraticCurveTo(buttonYstart-buttonHeight/2,buttonXstart+buttonWidth+3,buttonYstart-buttonHeight,buttonXstart+buttonWidth);
+	ctx.quadraticCurveTo(buttonYstart-buttonHeight/2,
+	buttonXstart+buttonWidth+3,buttonYstart-buttonHeight,buttonXstart+buttonWidth);
 	ctx.fillStyle = "rgba(202,202,202,0.7)";
 	ctx.lineWidth = 1;
 	ctx.fill();
@@ -360,7 +368,8 @@ function dynamic_clockGraphics_draw(ctx){
 	var sec_arc_angle = 2*Math.PI*time[2]/60;
 	var min_arc_angle = 2*Math.PI*time[1]/60;
 	var hour_arc_angle = 2*Math.PI*time[0]/12+(2*Math.PI*1/12)*(time[1]/60); 
-	//the added parcel allows for hour needle to change withing the hour as it comes closer each draw to the next hour
+	//the added parcel allows for hour needle to change withing 
+	//the hour as it comes closer each draw to the next hour
 
 	//needle sizes
 
@@ -501,6 +510,7 @@ function TextAux(ctx,text){
 	}
 	return pos;
 }</code></pre>
-	</main>
+</section>
+</main>
 </body>
 </html>
