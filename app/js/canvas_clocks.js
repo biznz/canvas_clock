@@ -127,6 +127,7 @@ function init(){
 	//"assets/wood2-1.jpg"*/
 }
 
+
 function ClockLight(event){
 
 	//clock changesLightState if left mouse button is pressed and if mouse leaves button during mouse left button press

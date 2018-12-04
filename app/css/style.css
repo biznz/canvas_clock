@@ -10,27 +10,51 @@ header h1{
 }
 
 
-#canvas{
-	border-style: solid;
-	border-color: blue;
-}
-
 pre{
 
 	padding-left: 50px;
 }
 
 aside{
-	width:500px;
-	height:400px;
+	bottom:35px;
 	position: fixed;
-	right: -5%;
+	right: 0%;
+}
+.card{
+	width:500px;
+	height:auto;
+	right: 0%;
 }
 
+.card-img-top{
+	width:300px;
+	height:300px;
+}
+
+section {
+  	position: relative;
+  	padding-top: 30px;
+  	display: inline-block;
+  }
+
+section>h5 {
+	padding-left: 50px;
+	width: 50%;
+	margin: auto;
+	padding:10px;
+}
+
+code{
+
+}
 /* On screens that are 1155 or less set position to fixed */
 @media screen and (max-width: 1155px) {
   aside {
     position: relative;
+    margin: auto;
+    width: 80%;
+    top:20px;
+    padding: 40px;
   }
   section {
   	position: relative;
@@ -39,10 +63,20 @@ aside{
 
 #workbench_layer1,#workbench_layer2{
 	position: absolute;
-	right: 10px;
+	left:50px;
+	top:-35px;
 }
 
 code{
 	display: block;
 	white-space: pre-wrap;
+}
+
+.navbar-title{
+	font-size: 18px;
+	text-align: center;
+	color: white;
+	margin: auto;
+    width: 50%;
+    padding: 8px;
 }
