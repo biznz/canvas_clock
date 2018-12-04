@@ -13,10 +13,10 @@
 		//toggle button text
 		function toggleText() {
 		  var x = document.getElementById("toggler");
-		  if (x.innerHTML === "Light ON") {
+		  if (x.innerHTML === "Light ON ") {
 		    x.innerHTML = "Light OFF";
 		  } else {
-		    x.innerHTML = "Light ON";
+		    x.innerHTML = "Light ON ";
 		  }
 		}
 	</script>
@@ -39,9 +39,9 @@
 		</div>
 		<div class="card-body">
 	    <h5 class="card-subtitle mb-2 text-muted">WristWatch Indiglo Timex</h5>
-	    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+	    <p class="card-text">Canvas js drawing based on a wristwatch. You can use it's only button to light it.</p>
 	    <button type="button" id="toggler" class="btn-sm btn-primary" data-toggle="button" aria-pressed="false"
-	    onclick="myClock.changeLightState();toggleText();">Light ON</button> 
+	    onclick="myClock.changeLightState();toggleText();">Light ON </button> 
 	  </div>
 	</div>
 </aside>
@@ -557,5 +557,14 @@ function TextAux(ctx,text){
 </pre>
 </section>
 </main>
+<footer class="footer">
+	<div class="container">
+    <hr />
+        <div class="text-center center-block">
+	            <a href="https://plus.google.com/+Bootsnipp-page"><i class="fa fa-google-plus-square fa-3x social"></i></a>
+		</div>
+		<p>2015</p>
+	</div>
+	</footer>
 </body>
 </html>
