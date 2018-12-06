@@ -1,3 +1,13 @@
+
+.active{
+	color:white;
+}
+
+.active:hover{
+	color:rgb(200, 200, 200);
+
+}
+
 header {
 	color: #259C8E; 
 	font-size: 1.0em;
@@ -19,12 +29,15 @@ aside{
 	padding-top: 0;
 	position: fixed;
 	right: 0%;
+	height: 100%;
 }
 .card{
+	top: 50%;
+	transform: translate(0, -50%);
 	width:400px;
 	height:auto;
-	right: 0%;
-	border:0px;
+	right: 5%;
+	border-style: none;
 }
 
 .card-img-top{
@@ -34,31 +47,33 @@ aside{
 
 section {
   	position: relative;
-  	padding-top: 30px;
+  	padding-top: 50px;
+  	padding-left: 50px;
   	display: inline-block;
+  	min-width: 50%;
   }
 
 section>h5 {
+	text-align: center;
 	padding-left: 50px;
 	width: 50%;
 	margin: auto;
 	padding:10px;
 }
 
-code{
 
-}
 /* On screens that are 1155 or less set position to fixed */
-@media screen and (max-width: 1155px) {
+@media screen and (max-width: 1300px) {
   aside {
     position: relative;
     margin: auto;
     width: 80%;
     top:20px;
     padding: 40px;
+
   }
-  section {
-  	position: relative;
+  .card{
+  	transform: translate(0, 0);
   }
 }
 
